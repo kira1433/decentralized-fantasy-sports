@@ -41,5 +41,11 @@ class Transactions:
         Transactions.save_transactions(transactions)
 
     @staticmethod
+    def remove_transaction(remove_transaction):
+        transactions = Transactions.load_transactions()
+        transactions = [transaction for transaction in transactions if transaction.user != remove_transaction.user or transaction.match != remove_transaction.match or transaction.team != remove_transaction.team or transaction.amount != remove_transaction.amount]
+        Transactions.save_transactions(transactions)
+
+    @staticmethod
     def get_transactions():
         return Transactions.load_transactions()
