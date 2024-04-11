@@ -1,4 +1,5 @@
 import json
+from modules.transaction import Transactions
 
 class User:
     def __init__(self, username, public_key):
@@ -13,7 +14,7 @@ class User:
             'username': self.username,
             'public_key': self.public_key
         }
-
+    
 class Users:
     @staticmethod
     def load_users():
@@ -47,4 +48,6 @@ class Users:
             if user.username == username:
                 return user.public_key == public_key
         Users.create_user(username, public_key)
+
+        Transactions.add_transaction("genesis", "genesis", username, 10000.0)
         return True

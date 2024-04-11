@@ -1,4 +1,5 @@
 from modules.user import Users
+from modules.blockchain import Blockchain
 from modules.transaction import Transactions
 from modules.match import Matches
 
@@ -8,19 +9,34 @@ if __name__ == "__main__":
     print("Enter your public_key:")
     key = input()
     if Users.login(name,key):
-        print(f"Welcome {name}! Here are the list of matches to bet on")
-        
-        for match in Matches.get_matches():
-            print(f"ID:{match.match_id}, Team 1: {match.team_1}, Team 2: {match.team_2}")
-
-        print("Enter the match id you want to bet on:")
-        match = input()
-        print("Enter the team you want to bet on:")
-        team = input()
-        print("Enter the amount you want to bet:")
-        amount = input()
-        
-        Transactions.add_transaction(name, team, match, amount)
-
-
-        
+        while True:
+            print(f"Welcome {name}!")
+            print("1. View matches")
+            print("2. Bet on a match")
+            print("3. View transactions")
+            print("4. View balance")
+            print("5. Exit")
+            
+            choice = input("Enter your choice: ")
+            if choice == "1":
+                for match in Matches.get_matches():
+                    print(f"match_id:{match.match_id}, team_1: {match.team_1}, team_2: {match.team_2}\n")
+            elif choice == "2":
+                print("Enter the match_id you want to bet on:")
+                match = input()
+                print("Enter the team you want to bet on:")
+                team = input()
+                print("Enter the amount you want to bet:")
+                amount = float(input())
+                Transactions.add_transaction(name, team, match, amount)
+            elif choice == "3":
+                for transaction in Transactions.get_transactions():
+                    if (transaction.user == name or transaction.match == name) and transaction.successful:
+                        print(transaction)
+            elif choice == "4":
+                print(f"Your Balance is: {Blockchain.get_balance(name)}")
+            elif choice == "5":
+                exit()
+    else:
+        print("Invalid public_key")
+        exit()
