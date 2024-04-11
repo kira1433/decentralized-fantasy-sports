@@ -1,1 +1,0 @@
-Decentralized Fantasy Sports App
