@@ -34,9 +34,9 @@ class Matches:
 
     @staticmethod
     def create_match(match_id, team_1, team_2):
-        matches = Matches.load_users()
+        matches = Matches.load_matches()
         matches.append(Match(match_id=match_id, team_1=team_1, team_2=team_2))
-        Matches.save_users(matches)
+        Matches.save_matches(matches)
 
     @staticmethod
     def get_matches():
