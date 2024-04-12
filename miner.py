@@ -1,5 +1,6 @@
 from modules.blockchain import Block, Blockchain
 from modules.transaction import Transactions
+from modules.user import User
 
 if __name__ == "__main__":
     while True:
@@ -11,7 +12,8 @@ if __name__ == "__main__":
         if choice == "1":
             transactions = Transactions.get_unsuccessful_transactions()
             random_transaction = transactions[0]
-            if Transactions.validate_transaction(random_transaction):
+            if Transactions.validate_transaction(random_transaction) and Transactions.verify_transaction(random_transaction):
+                print("Transaction validated and verified...")
                 Blockchain.add_block(Block.create_block(random_transaction.to_dict()))
                 Transactions.successful_transaction(random_transaction)
             else:

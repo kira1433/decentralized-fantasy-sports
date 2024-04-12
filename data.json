@@ -1,102 +1,71 @@
 {
-  "transactions": [
-    {
-      "user": "genesis",
-      "match": "aashish",
-      "team": "genesis",
-      "amount": 10000,
-      "successful": true
-    },
-    {
-      "user": "aashish",
-      "match": "match_12",
-      "team": "SRH",
-      "amount": 8000.0,
-      "successful": true
-    },
-    {
-      "user": "genesis",
-      "match": "vignesh",
-      "team": "genesis",
-      "amount": 10000.0,
-      "successful": true
-    },
-    {
-      "user": "vignesh",
-      "match": "match_12",
-      "team": "CSK",
-      "amount": 10000.0,
-      "successful": true
-    },
-    {
-      "user": "match_12",
-      "match": "aashish",
-      "team": "winner",
-      "amount": 18000.0,
-      "successful": true
-    }
-  ],
-  "users": [
-    { "username": "aashish", "public_key": "1234" },
-    { "username": "vignesh", "public_key": "1234" }
-  ],
-  "matches": [{ "match_id": "match_12", "team_1": "SRH", "team_2": "CSK" }],
-  "blockchain": [
-    {
-      "index": 0,
-      "timestamp": 1712857272.375065,
-      "data": { "sender": "genesis", "receiver": "genesis", "amount": 0 },
-      "previous_hash": "0",
-      "nonce": 0,
-      "hash": "71e117b28bbe9759c700c4010d9d89ead3be970b4c0cf172e1f9b0c17db86c25"
-    },
-    {
-      "index": 1,
-      "timestamp": 1712857774.6719017,
-      "data": { "sender": "genesis", "receiver": "aashish", "amount": 10000 },
-      "previous_hash": "71e117b28bbe9759c700c4010d9d89ead3be970b4c0cf172e1f9b0c17db86c25",
-      "nonce": 19112,
-      "hash": "0000e6836fa722e442547e3485170749bc08b110975ad922db6cbcd4be228e22"
-    },
-    {
-      "index": 2,
-      "timestamp": 1712858307.5297976,
-      "data": { "sender": "aashish", "receiver": "match_12", "amount": 8000.0 },
-      "previous_hash": "0000e6836fa722e442547e3485170749bc08b110975ad922db6cbcd4be228e22",
-      "nonce": 4235,
-      "hash": "0000e1d91d279fb6e5b07982b7c41bae3d5a04bfe11feba22b2e4b358154236b"
-    },
-    {
-      "index": 3,
-      "timestamp": 1712858464.8960228,
-      "data": { "sender": "genesis", "receiver": "vignesh", "amount": 10000.0 },
-      "previous_hash": "0000e1d91d279fb6e5b07982b7c41bae3d5a04bfe11feba22b2e4b358154236b",
-      "nonce": 23013,
-      "hash": "0000b3f990b030f71b60f5ee0de65fe7b8078ffbd1f1410fce3b0f9614c1a387"
-    },
-    {
-      "index": 4,
-      "timestamp": 1712858478.3285348,
-      "data": {
-        "sender": "vignesh",
-        "receiver": "match_12",
-        "amount": 10000.0
-      },
-      "previous_hash": "0000b3f990b030f71b60f5ee0de65fe7b8078ffbd1f1410fce3b0f9614c1a387",
-      "nonce": 100129,
-      "hash": "00006f429b7d8842d590d13448d5594ca6fa7338f5d59ee0fe29739669b6848d"
-    },
-    {
-      "index": 5,
-      "timestamp": 1712858514.1422358,
-      "data": {
-        "sender": "match_12",
-        "receiver": "aashish",
-        "amount": 18000.0
-      },
-      "previous_hash": "00006f429b7d8842d590d13448d5594ca6fa7338f5d59ee0fe29739669b6848d",
-      "nonce": 112919,
-      "hash": "000069ab38b598d725e25c33ee064c4767144a5cd58a6d67285d6e9c0ef2dac4"
-    }
-  ]
+    "transactions": [
+        {
+            "user": "genesis",
+            "match": "vignesh",
+            "team": "genesis",
+            "amount": 10000.0,
+            "successful": true,
+            "transaction_hash": "1eadc3f8bd85a5623d13b880e63b02c9ff1375bf077e006c944fac9f6b169bf9"
+        },
+        {
+            "user": "vignesh",
+            "match": "match_1",
+            "team": "SRH",
+            "amount": 1234.0,
+            "successful": true,
+            "transaction_hash": "67d1374e01cebd00d5b19db8a100d6e77db0552594d60151e22930088a55341e"
+        }
+    ],
+    "users": [
+        {
+            "username": "vignesh",
+            "secret_key": "123"
+        }
+    ],
+    "matches": [
+        {
+            "match_id": "match_1",
+            "team_1": "SRH",
+            "team_2": "CSK"
+        }
+    ],
+    "blockchain": [
+        {
+            "index": 0,
+            "timestamp": 1712947703.199553,
+            "data": {
+                "sender": "genesis",
+                "receiver": "genesis",
+                "amount": 0
+            },
+            "previous_hash": "0",
+            "nonce": 0,
+            "hash": "d38486cfcb8105011251be607de36768bd40c12f51a273ca0b4549e8216d4e88"
+        },
+        {
+            "index": 1,
+            "timestamp": 1712948975.644125,
+            "data": {
+                "sender": "genesis",
+                "receiver": "vignesh",
+                "amount": 10000.0
+            },
+            "previous_hash": "d38486cfcb8105011251be607de36768bd40c12f51a273ca0b4549e8216d4e88",
+            "nonce": 15347,
+            "hash": "00007181fd6f7ca18c1109a8766a87e0ae41015de7b11a98f91628887fc9b7a0"
+        },
+        {
+            "index": 2,
+            "timestamp": 1712948985.713533,
+            "data": {
+                "sender": "vignesh",
+                "receiver": "match_1",
+                "amount": 1234.0
+            },
+            "previous_hash": "00007181fd6f7ca18c1109a8766a87e0ae41015de7b11a98f91628887fc9b7a0",
+            "nonce": 161613,
+            "hash": "00001b3901dfb8197d840c61c04cdce0a50d2763c485217289b718bec1094347"
+        }
+    ]
 }

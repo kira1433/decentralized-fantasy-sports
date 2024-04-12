@@ -1,18 +1,16 @@
 import json
-from modules.transaction import Transactions
-
 class User:
-    def __init__(self, username, public_key):
+    def __init__(self, username, secret_key):
         self.username = username
-        self.public_key = public_key
+        self.secret_key = secret_key
 
     def __str__(self):
-        return f"username: {self.username}, public_key: {self.public_key}"
+        return f"username: {self.username}, secret_key: {self.secret_key}"
 
     def to_dict(self):
         return {
             'username': self.username,
-            'public_key': self.public_key
+            'secret_key': self.secret_key
         }
     
 class Users:
@@ -32,22 +30,29 @@ class Users:
             json.dump(data, file)
 
     @staticmethod
-    def create_user(username, public_key):
+    def create_user(username, secret_key):
         users = Users.load_users()
-        users.append(User(username=username, public_key=public_key))
+        users.append(User(username=username, secret_key=secret_key))
         Users.save_users(users)
 
     @staticmethod
     def get_users():
         return Users.load_users()
+    
+    @staticmethod
+    def fetch_secret_key(username):
+        users=Users.load_users()
+        for user in users:
+            if user.username == username:
+                return user.secret_key
 
     @staticmethod
-    def login(username, public_key):
+    def login(username, secret_key):
         users = Users.load_users()
         for user in users:
             if user.username == username:
-                return user.public_key == public_key
-        Users.create_user(username, public_key)
-
-        Transactions.add_transaction("genesis", "genesis", username, 10000.0)
+                return user.secret_key == secret_key
+        Users.create_user(username, secret_key)
+        from modules.transaction import Transactions
+        Transactions.add_transaction("genesis", "genesis", username, 10000.0,secret_key)
         return True

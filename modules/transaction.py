@@ -1,16 +1,20 @@
+import hmac
+import hashlib
 import json
 from modules.blockchain import Blockchain
+from modules.hmac import create_hmac,verify_hmac,verify_transaction_hmac
 
 class Transaction:
-    def __init__(self, user, team, match, amount,successful=False):
+    def __init__(self, user, team, match, amount,successful=False,transaction_hash="#"):
         self.user = user
         self.team = team
         self.match = match
         self.amount = amount
         self.successful = successful
+        self.transaction_hash = transaction_hash
 
     def __str__(self):
-        return f"user: {self.user}, match: {self.match}, team: {self.team}, amount: {self.amount}, successful: {self.successful}"
+        return f"user: {self.user}, match: {self.match}, team: {self.team}, amount: {self.amount}, successful: {self.successful}, transaction_hash:{self.transaction_hash}"
 
     def to_dict(self):
         return {
@@ -18,7 +22,8 @@ class Transaction:
             'match': self.match,
             'team': self.team,
             'amount': self.amount,
-            'successful': self.successful
+            'successful': self.successful,
+            'transaction_hash': self.transaction_hash
         }
 
 class Transactions:
@@ -38,9 +43,11 @@ class Transactions:
             json.dump(data, file)
     
     @staticmethod
-    def add_transaction(user, team, match, amount):
+    def add_transaction(user, team, match, amount,key):
         transactions = Transactions.load_transactions()
-        transactions.append(Transaction(user=user, team=team, match=match, amount=amount))
+        transaction_encoded=user+team+match+str(amount)
+        transaction_hmac=create_hmac(key, transaction_encoded)
+        transactions.append(Transaction(user=user, team=team, match=match, amount=amount,transaction_hash=transaction_hmac))
         Transactions.save_transactions(transactions)
 
     @staticmethod
@@ -74,5 +81,4 @@ class Transactions:
     
     @staticmethod
     def verify_transaction(transaction):
-        pass
-        
+        return verify_transaction_hmac(transaction=transaction)

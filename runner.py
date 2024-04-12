@@ -6,7 +6,7 @@ from modules.match import Matches
 if __name__ == "__main__":
     print("Enter your username:")
     name = input()
-    print("Enter your public_key:")
+    print("Enter your secret_key:")
     key = input()
     if Users.login(name,key):
         while True:
@@ -28,7 +28,7 @@ if __name__ == "__main__":
                 team = input()
                 print("Enter the amount you want to bet:")
                 amount = float(input())
-                Transactions.add_transaction(name, team, match, amount)
+                Transactions.add_transaction(name, team, match, amount,key)
             elif choice == "3":
                 for transaction in Transactions.get_transactions():
                     if (transaction.user == name or transaction.match == name) and transaction.successful:
@@ -38,5 +38,5 @@ if __name__ == "__main__":
             elif choice == "5":
                 exit()
     else:
-        print("Invalid public_key")
+        print("Invalid secret_key")
         exit()
