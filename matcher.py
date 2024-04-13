@@ -1,6 +1,7 @@
 from modules.match import Matches
 from modules.blockchain import Blockchain
 from modules.transaction import Transactions
+from modules.user import Users
 
 if __name__ == "__main__":
     print("Enter match no:")
@@ -28,8 +29,11 @@ if __name__ == "__main__":
                 winner_pool += int(transaction.amount)
 
     for transaction in Transactions.get_transactions():
+        print(transaction.successful)
         if transaction.match == match_id and transaction.successful and transaction.team == winner:
-            Transactions.add_transaction(match_id, "winner", transaction.user, int(transaction.amount) * (total_pool / winner_pool))
+            secret_key=Users.fetch_secret_key(transaction.user)
+            print("Adding credit transaction")
+            Transactions.add_transaction(match_id, "winner", transaction.user, int(transaction.amount) * (total_pool / winner_pool),secret_key)
     
     
     
