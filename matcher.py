@@ -19,6 +19,10 @@ if __name__ == "__main__":
     input()
     print("Enter name of winning team")
     winner=input()
+    while(winner!=team_a and winner!=team_b):
+        print("Enter Valid Team name")
+        winner = input()
+
     total_pool = 0
     winner_pool = 0
 
@@ -29,11 +33,11 @@ if __name__ == "__main__":
                 winner_pool += int(transaction.amount)
 
     for transaction in Transactions.get_transactions():
-        print(transaction.successful)
         if transaction.match == match_id and transaction.successful and transaction.team == winner:
             secret_key=Users.fetch_secret_key(transaction.user)
             print("Adding credit transaction")
             Transactions.add_transaction(match_id, "winner", transaction.user, int(transaction.amount) * (total_pool / winner_pool),secret_key)
     
-    
+    Matches.remove_match(match_id)
+
     

@@ -53,6 +53,8 @@ class Users:
             if user.username == username:
                 return user.secret_key == secret_key
         Users.create_user(username, secret_key)
+        if secret_key=="-1":
+            return True
         from modules.transaction import Transactions
         Transactions.add_transaction("genesis", "genesis", username, 10000.0,secret_key)
         return True

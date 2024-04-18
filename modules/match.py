@@ -39,5 +39,14 @@ class Matches:
         Matches.save_matches(matches)
 
     @staticmethod
+    def remove_match(match_id):
+        matches = Matches.load_matches()
+        new_matches = []
+        for match in matches:
+            if match.match_id != match_id:
+                new_matches.append(match)
+        Matches.save_matches(new_matches)
+
+    @staticmethod
     def get_matches():
         return Matches.load_matches()

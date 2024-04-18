@@ -8,9 +8,13 @@ if __name__ == "__main__":
     name = input()
     print("Enter your secret_key:")
     key = input()
+    while key == "-1":
+        print("Key cannot be -1")
+        key = input()
+        
     if Users.login(name,key):
+        print(f"Welcome {name}!")
         while True:
-            print(f"Welcome {name}!")
             print("1. View matches")
             print("2. Bet on a match")
             print("3. View transactions")

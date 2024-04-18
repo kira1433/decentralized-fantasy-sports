@@ -3,13 +3,14 @@ import json
 import time
 
 class Block:
-    def __init__(self, index=None, timestamp=None, data=None, previous_hash=None, nonce=0, hash=None):
+    def __init__(self, index=None, timestamp=None, data=None, previous_hash=None, nonce=0, hash=None, merkle_root=None):
         self.index = index or 0
         self.timestamp = timestamp or time.time()
         self.data = data or "Genesis Block"
         self.previous_hash = previous_hash or "0"
         self.nonce = nonce or 0
         self.hash = hash or self.calculate_hash()
+        self.merkle_root = merkle_root or self.calculate_merkle_root()
 
     def __str__(self):
         return f"index: {self.index}, timestamp: {self.timestamp}, data: {self.data}"
@@ -39,7 +40,8 @@ class Block:
             "timestamp": self.timestamp,
             "data": self.data,
             "previous_hash": self.previous_hash,
-            "nonce": self.nonce
+            "nonce": self.nonce,
+            "merkle_root": self.merkle_root
         }, sort_keys=True).encode()
         return hashlib.sha256(block_string).hexdigest()
 
@@ -122,3 +124,4 @@ class Blockchain:
             if block.data['sender'] == username:
                 balance -= block.data['amount']
         return balance
+    

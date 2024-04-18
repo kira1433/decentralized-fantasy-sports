@@ -2,6 +2,8 @@ import hmac
 import hashlib
 import json
 from modules.blockchain import Blockchain
+from modules.user import Users
+from modules.match import Matches
 from modules.hmac import create_hmac,verify_hmac,verify_transaction_hmac
 
 class Transaction:
@@ -14,7 +16,7 @@ class Transaction:
         self.transaction_hash = transaction_hash
 
     def __str__(self):
-        return f"user: {self.user}, match: {self.match}, team: {self.team}, amount: {self.amount}, successful: {self.successful}, transaction_hash:{self.transaction_hash}"
+        return f"user: {self.user}, match: {self.match}, team: {self.team}, amount: {self.amount}, successful: {self.successful}"
 
     def to_dict(self):
         return {
@@ -74,7 +76,7 @@ class Transactions:
 
     @staticmethod
     def validate_transaction(transaction):
-        if transaction.user == "genesis" or Blockchain.get_balance(transaction.user) >= transaction.amount: 
+        if (transaction.user == "genesis" or Blockchain.get_balance(transaction.user) >= transaction.amount) and ((transaction.match in [m.match_id for m in Matches.get_matches()] and transaction.team in [m.team_1 for m in Matches.get_matches() if m.match_id == transaction.match or m.team_2 for m in Matches.get_matches() if m.match_id == transaction.match]) or transaction.match in [u.username for u in Users.get_users()]): 
             return True
         Transactions.remove_transaction(transaction)
         return False
