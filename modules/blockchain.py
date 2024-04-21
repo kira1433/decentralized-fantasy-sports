@@ -9,20 +9,26 @@ class Block:
         self.data = data or "Genesis Block"
         self.previous_hash = previous_hash or "0"
         self.nonce = nonce or 0
+        self.merkle_root = merkle_root        
         self.hash = hash or self.calculate_hash()
-        self.merkle_root = merkle_root or self.calculate_merkle_root()
+        # print(f"Block created with merkle_root: {self.merkle_root}") 
+        # or self.calculate_merkle_root()
 
     def __str__(self):
         return f"index: {self.index}, timestamp: {self.timestamp}, data: {self.data}"
 
     @staticmethod
     def create_block(data):
-        transaction = {
-            'sender': data['user'],
-            'receiver': data['match'],
-            'amount': data['amount']
-        }
-        return Block(data=transaction)
+        transactions = [
+            {
+                'sender': transaction['user'],
+                'receiver': transaction['match'],
+                'amount': transaction['amount']
+            }
+            for transaction in data
+        ]
+        return Block(data=transactions)
+
     
     def to_dict(self):
         return {
@@ -53,6 +59,10 @@ class Block:
         print("Block mined:", self.hash)
 
 
+
+
+
+
 class Blockchain:
     chain = []
     difficulty = 4  # Adjust this value to increase/decrease mining difficulty
@@ -72,11 +82,22 @@ class Blockchain:
         with open("data.json", "w") as file:
             json.dump(data, file)
 
+    # @staticmethod
+    # def create_genesis_block():
+    #     Blockchain.chain.append(Block(index=0, data={ "sender": "genesis", "receiver": "genesis", "amount": 0 }, previous_hash="0"))
+    #     Blockchain.save_blockchain(Blockchain.chain)
+    
     @staticmethod
     def create_genesis_block():
-        Blockchain.chain.append(Block(index=0, data={ "sender": "genesis", "receiver": "genesis", "amount": 0 }, previous_hash="0"))
+        # Create a list of transactions for the genesis block
+        genesis_transactions = [{"sender": "genesis", "receiver": "genesis", "amount": 0}]
+        
+        # Append the genesis block to the chain
+        Blockchain.chain.append(Block(index=0, data=genesis_transactions, previous_hash="0"))
+        
+        # Save the blockchain with the newly added genesis block
         Blockchain.save_blockchain(Blockchain.chain)
-    
+        
     @staticmethod
     def get_latest_block():
         Blockchain.load_blockchain()
@@ -119,9 +140,11 @@ class Blockchain:
         balance = 0
         Blockchain.load_blockchain()
         for block in Blockchain.chain:
-            if block.data['receiver'] == username:
-                balance += block.data['amount']
-            if block.data['sender'] == username:
-                balance -= block.data['amount']
+            for transaction in block.data:
+                if transaction['receiver'] == username:
+                    balance += transaction['amount']
+                if transaction['sender'] == username:
+                    balance -= transaction['amount']
         return balance
+
     
