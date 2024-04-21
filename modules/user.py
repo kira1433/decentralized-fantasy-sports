@@ -1,4 +1,18 @@
 import json
+import secrets
+import random
+import hmac
+import hashlib
+
+def create_hmac(secret_key,message):
+    hmac_obj = hmac.new(secret_key.encode(), msg=message.encode(), digestmod=hashlib.sha256)
+    
+    return hmac_obj.hexdigest()
+
+def verify_hmac(secret_key,message,received_hmac):
+    expected_hmac=create_hmac(secret_key=secret_key,message=message)
+    return hmac.compare_digest(received_hmac, expected_hmac)
+
 class User:
     def __init__(self, username, secret_key):
         self.username = username
@@ -53,6 +67,15 @@ class Users:
             if user.username == username:
                 return user.secret_key == secret_key
         Users.create_user(username, secret_key)
+
+        random_challenge = secrets.token_hex(16)
+        random_bit = random.randint(0,1)
+        message = f"{random_challenge}{random_bit}"
+        hash = create_hmac(secret_key, message)
+        if not verify_hmac(secret_key, message, hash):
+            print("HMAC verification failed")
+            return False
+
         if secret_key=="-1":
             return True
         from modules.transaction import Transactions
