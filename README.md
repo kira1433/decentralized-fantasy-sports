@@ -1,4 +1,7 @@
-### Decentralized Fantasy Sports Application
+## Decentralized Fantasy Sports Application
+
+### Background
+- This Application provides a simulation of a simple betting game, in which participants can choose to bet on teams across multiple matches in a decentralized fashion.
 - The Application uses a blockchain to securely perform transactions amongst users on the platform. HMAC has been implemented to verify transactions before a miner adds them to the blockchain.
 - A matcher adds the possible matches that a user can bet on. On betting the user's transaction request is added to the transaction pool along with its HMAC hash. The miner then verifies the HMAC and validates the transaction before adding it to a block.
 - The miner then executes the POW protocol to mine the block and adds it to the blockchain.
