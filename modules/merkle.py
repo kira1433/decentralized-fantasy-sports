@@ -1,4 +1,3 @@
-from modules.transaction import Transactions
 import hashlib
 
 class Node:
@@ -19,8 +18,7 @@ class MerkleTree:
     def createTree(self, trans):
         leafArray = []
         for i in trans:
-            if Transactions.validate_transaction(i) and Transactions.verify_transaction(i):  # can be optimized further
-                leafArray.append(i)
+            leafArray.append(i)
 
         if len(trans) % 2 != 0:
             leafArray.append(leafArray[-1])  # important, would mess up without copy

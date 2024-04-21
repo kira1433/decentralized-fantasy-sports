@@ -6,13 +6,11 @@ class Block:
     def __init__(self, index=None, timestamp=None, data=None, previous_hash=None, nonce=0, hash=None, merkle_root=None):
         self.index = index or 0
         self.timestamp = timestamp or time.time()
-        self.data = data or "Genesis Block"
+        self.data = data or []
         self.previous_hash = previous_hash or "0"
         self.nonce = nonce or 0
-        self.merkle_root = merkle_root        
+        self.merkle_root = merkle_root or "0"
         self.hash = hash or self.calculate_hash()
-        # print(f"Block created with merkle_root: {self.merkle_root}") 
-        # or self.calculate_merkle_root()
 
     def __str__(self):
         return f"index: {self.index}, timestamp: {self.timestamp}, data: {self.data}, Merkle Root: {self.merkle_root}"
@@ -37,7 +35,8 @@ class Block:
             'data': self.data,
             'previous_hash': self.previous_hash,
             'nonce': self.nonce,
-            'hash': self.hash
+            'hash': self.hash,
+            'merkle_root': self.merkle_root
         }
 
     def calculate_hash(self):
@@ -91,12 +90,8 @@ class Blockchain:
     
     @staticmethod
     def create_genesis_block():
-        # Create a list of transactions for the genesis block
-        genesis_transactions = [{"sender": "genesis", "receiver": "genesis", "amount": 0}]
-        
-        # Append the genesis block to the chain
-        Blockchain.chain.append(Block(index=0, data=genesis_transactions, previous_hash="0"))
-        
+        # Create the genesis block
+        Blockchain.chain.append(Block())
         # Save the blockchain with the newly added genesis block
         Blockchain.save_blockchain(Blockchain.chain)
 
@@ -129,6 +124,7 @@ class Blockchain:
             previous_block = Blockchain.chain[i - 1]
 
             if current_block.hash != current_block.calculate_hash():
+                print(current_block.hash, current_block.calculate_hash())
                 print("Invalid block hash")
                 return False
 

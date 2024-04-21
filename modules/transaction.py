@@ -76,7 +76,7 @@ class Transactions:
 
     @staticmethod
     def validate_transaction(transaction):
-        if (transaction.user == "genesis" or Blockchain.get_balance(transaction.user) >= transaction.amount) and ((transaction.match in [m.match_id for m in Matches.get_matches()] and transaction.team in [m.team_1 for m in Matches.get_matches() if m.match_id == transaction.match or m.team_2 for m in Matches.get_matches() if m.match_id == transaction.match]) or transaction.match in [u.username for u in Users.get_users()]): 
+        if (transaction.user == "genesis" or Blockchain.get_balance(transaction.user) >= transaction.amount) and ((transaction.match in [m.match_id for m in Matches.get_matches()] and ((transaction.team in [m.team_1 for m in Matches.get_matches() if m.match_id == transaction.match]) or (transaction.team in [m.team_2 for m in Matches.get_matches() if m.match_id == transaction.match]))) or transaction.match in [u.username for u in Users.get_users()]): 
             return True
         Transactions.remove_transaction(transaction)
         return False

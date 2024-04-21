@@ -24,26 +24,44 @@ if __name__ == "__main__":
                 transactions = Transactions.get_unsuccessful_transactions()
 
 
-                # random_transaction = transactions[0] 
-                current_index = 0
                 transaction_list = []
                 trans_without_dict = []
+
+                transaction_list_bets = []
+                trans_without_dict_bets = []
+
                 for random_transaction in transactions:
-                    if Transactions.validate_transaction(random_transaction) and Transactions.verify_transaction(random_transaction):
-                        print("Transaction validated and verified...")
-                        transaction_list.append(random_transaction.to_dict())
-                        trans_without_dict.append(random_transaction)
-                        # Blockchain.add_block(Block.create_block(random_transaction.to_dict()))
-                        Transactions.successful_transaction(random_transaction)
-                    else:
-                        print("Invalid transaction")
-                    current_index += 1
+                    if random_transaction.user not in [u.username for u in Users.get_users()]:
+                        if Transactions.validate_transaction(random_transaction) and Transactions.verify_transaction(random_transaction):
+                            print("Transaction validated and verified...")
+                            transaction_list.append(random_transaction.to_dict())
+                            trans_without_dict.append(random_transaction)
+                            Transactions.successful_transaction(random_transaction)
+                        else:
+                            print("Invalid transaction")
+                
+                
                 if(len(transaction_list) > 0):
                     mtree = MerkleTree(trans_without_dict)
                     mtreeRoot = mtree.getRoot()
-                    print(mtreeRoot)
-                    
                     Blockchain.add_block(Block.create_block(transaction_list, mtreeRoot), mtreeRoot)
+                    
+
+                for random_transaction in transactions:
+                    if random_transaction.user in [u.username for u in Users.get_users()]:
+                        if Transactions.validate_transaction(random_transaction) and Transactions.verify_transaction(random_transaction):
+                            print("Transaction validated and verified...")
+                            transaction_list_bets.append(random_transaction.to_dict())
+                            trans_without_dict_bets.append(random_transaction)
+                            Transactions.successful_transaction(random_transaction)
+                        else:
+                            print("Invalid transaction")
+
+                if(len(transaction_list_bets) > 0):
+                    mtree = MerkleTree(trans_without_dict_bets)
+                    mtreeRoot = mtree.getRoot()
+                    Blockchain.add_block(Block.create_block(transaction_list_bets, mtreeRoot), mtreeRoot)
+                
 
             elif choice == "2":
                 Blockchain.print_chain()
