@@ -6,23 +6,27 @@ class Block:
     def __init__(self, index=None, timestamp=None, data=None, previous_hash=None, nonce=0, hash=None, merkle_root=None):
         self.index = index or 0
         self.timestamp = timestamp or time.time()
-        self.data = data or "Genesis Block"
+        self.data = data or []
         self.previous_hash = previous_hash or "0"
         self.nonce = nonce or 0
+        self.merkle_root = merkle_root or "0"
         self.hash = hash or self.calculate_hash()
-        self.merkle_root = merkle_root or self.calculate_merkle_root()
 
     def __str__(self):
-        return f"index: {self.index}, timestamp: {self.timestamp}, data: {self.data}"
+        return f"index: {self.index}, timestamp: {self.timestamp}, data: {self.data}, Merkle Root: {self.merkle_root}"
 
     @staticmethod
-    def create_block(data):
-        transaction = {
-            'sender': data['user'],
-            'receiver': data['match'],
-            'amount': data['amount']
-        }
-        return Block(data=transaction)
+    def create_block(data, merkroot=None):
+        transactions = [
+            {
+                'sender': transaction['user'],
+                'receiver': transaction['match'],
+                'amount': transaction['amount']
+            }
+            for transaction in data
+        ]
+        return Block(data=transactions, merkle_root=merkroot)
+
     
     def to_dict(self):
         return {
@@ -31,7 +35,8 @@ class Block:
             'data': self.data,
             'previous_hash': self.previous_hash,
             'nonce': self.nonce,
-            'hash': self.hash
+            'hash': self.hash,
+            'merkle_root': self.merkle_root
         }
 
     def calculate_hash(self):
@@ -51,6 +56,12 @@ class Block:
             self.nonce += 1
             self.hash = self.calculate_hash()
         print("Block mined:", self.hash)
+
+    # def calculate_merkel_root(self)
+
+
+
+
 
 
 class Blockchain:
@@ -72,21 +83,29 @@ class Blockchain:
         with open("data.json", "w") as file:
             json.dump(data, file)
 
+    # @staticmethod
+    # def create_genesis_block():
+    #     Blockchain.chain.append(Block(index=0, data={ "sender": "genesis", "receiver": "genesis", "amount": 0 }, previous_hash="0"))
+    #     Blockchain.save_blockchain(Blockchain.chain)
+    
     @staticmethod
     def create_genesis_block():
-        Blockchain.chain.append(Block(index=0, data={ "sender": "genesis", "receiver": "genesis", "amount": 0 }, previous_hash="0"))
+        # Create the genesis block
+        Blockchain.chain.append(Block())
+        # Save the blockchain with the newly added genesis block
         Blockchain.save_blockchain(Blockchain.chain)
-    
+
     @staticmethod
     def get_latest_block():
         Blockchain.load_blockchain()
         return Blockchain.chain[-1]
 
     @staticmethod
-    def add_block(new_block):
+    def add_block(new_block, new_root):
         Blockchain.load_blockchain()
         new_block.index = Blockchain.get_latest_block().index + 1
         new_block.previous_hash = Blockchain.get_latest_block().hash
+        new_block.merkle_root = new_root
         new_block.mine_block(Blockchain.difficulty)
         Blockchain.chain.append(new_block)
         Blockchain.save_blockchain(Blockchain.chain)
@@ -105,6 +124,7 @@ class Blockchain:
             previous_block = Blockchain.chain[i - 1]
 
             if current_block.hash != current_block.calculate_hash():
+                print(current_block.hash, current_block.calculate_hash())
                 print("Invalid block hash")
                 return False
 
@@ -119,9 +139,11 @@ class Blockchain:
         balance = 0
         Blockchain.load_blockchain()
         for block in Blockchain.chain:
-            if block.data['receiver'] == username:
-                balance += block.data['amount']
-            if block.data['sender'] == username:
-                balance -= block.data['amount']
+            for transaction in block.data:
+                if transaction['receiver'] == username:
+                    balance += transaction['amount']
+                if transaction['sender'] == username:
+                    balance -= transaction['amount']
         return balance
+
     
