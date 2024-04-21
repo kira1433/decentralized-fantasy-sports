@@ -38,7 +38,7 @@ if __name__ == "__main__":
                 
                 
                 if(len(transaction_list) > 0):
-                    transaction_list.append(Transaction('genesis', 'genesis', name, 5000, True, "#"))
+                    transaction_list.append(Transaction('genesis', 'genesis', name, 5000.0, True, "#"))
                     mtree = MerkleTree(transaction_list)
                     mtreeRoot = mtree.getRoot()
                     dict_list = [t.to_dict() for t in transaction_list]
@@ -55,10 +55,10 @@ if __name__ == "__main__":
                             print("Invalid transaction")
 
                 if(len(transaction_list_bets) > 0):
-                    transaction_list_bets.append(Transaction('genesis', 'genesis', name, 5000, True, "#"))
+                    transaction_list_bets.append(Transaction('genesis', 'genesis', name, 5000.0, True, "#"))
                     mtree = MerkleTree(transaction_list)
                     mtreeRoot = mtree.getRoot()
-                    dict_list = [t.to_dict() for t in transaction_list]
+                    dict_list = [t.to_dict() for t in transaction_list_bets]
                     Blockchain.add_block(Block.create_block(dict_list, mtreeRoot), mtreeRoot)
 
             elif choice == "2":
