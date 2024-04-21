@@ -5,7 +5,11 @@
 - Once the match is ended by the matcher.py, bets can no longer be placed and the funds pooled are redistributed to the users who bet on the winning team in proportion to the amount they bet.
 
 ### Steps to run code
-Run server.py, matcher.py, runner.py and miner.py in the respective order and follow the menu instructions.
+- First run `server.py`, this will initialize the blockchain with a genesis block.
+- Second run `matcher.py`, you can add one match to the match pool following the instructions. If you press 'Enter', the match will terminate and money will be redistributed.
+- Third run `runner.py`, you can create one user and bet on any of the matches in the match pool, you can view your balance as well.
+- Fourth run `miner.py`, you can mine all the current transactions and get a reward, you can view your balance as well.
+- Finally, exit from all the files and press 'Enter' in `server.py` to terminate the application.
 
 ### Team Members
 2021A7PS0467H: Aashish Chandra K 
