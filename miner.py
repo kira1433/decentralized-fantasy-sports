@@ -1,6 +1,7 @@
 from modules.blockchain import Block, Blockchain
 from modules.transaction import Transactions
 from modules.user import Users
+from modules.merkle import MerkleTree
 
 if __name__ == "__main__":
     print("Enter your username:")
@@ -21,20 +22,29 @@ if __name__ == "__main__":
                     print("No transactions to mine")
                     continue
                 transactions = Transactions.get_unsuccessful_transactions()
+
+
                 # random_transaction = transactions[0] 
                 current_index = 0
                 transaction_list = []
+                trans_without_dict = []
                 for random_transaction in transactions:
                     if Transactions.validate_transaction(random_transaction) and Transactions.verify_transaction(random_transaction):
                         print("Transaction validated and verified...")
                         transaction_list.append(random_transaction.to_dict())
+                        trans_without_dict.append(random_transaction)
                         # Blockchain.add_block(Block.create_block(random_transaction.to_dict()))
                         Transactions.successful_transaction(random_transaction)
                     else:
                         print("Invalid transaction")
                     current_index += 1
                 if(len(transaction_list) > 0):
-                    Blockchain.add_block(Block.create_block(transaction_list))
+                    mtree = MerkleTree(trans_without_dict)
+                    mtreeRoot = mtree.getRoot()
+                    print(mtreeRoot)
+                    
+                    Blockchain.add_block(Block.create_block(transaction_list, mtreeRoot), mtreeRoot)
+
             elif choice == "2":
                 Blockchain.print_chain()
             elif choice == "3":

@@ -15,10 +15,10 @@ class Block:
         # or self.calculate_merkle_root()
 
     def __str__(self):
-        return f"index: {self.index}, timestamp: {self.timestamp}, data: {self.data}"
+        return f"index: {self.index}, timestamp: {self.timestamp}, data: {self.data}, Merkle Root: {self.merkle_root}"
 
     @staticmethod
-    def create_block(data):
+    def create_block(data, merkroot=None):
         transactions = [
             {
                 'sender': transaction['user'],
@@ -27,7 +27,7 @@ class Block:
             }
             for transaction in data
         ]
-        return Block(data=transactions)
+        return Block(data=transactions, merkle_root=merkroot)
 
     
     def to_dict(self):
@@ -57,6 +57,8 @@ class Block:
             self.nonce += 1
             self.hash = self.calculate_hash()
         print("Block mined:", self.hash)
+
+    # def calculate_merkel_root(self)
 
 
 
@@ -97,17 +99,18 @@ class Blockchain:
         
         # Save the blockchain with the newly added genesis block
         Blockchain.save_blockchain(Blockchain.chain)
-        
+
     @staticmethod
     def get_latest_block():
         Blockchain.load_blockchain()
         return Blockchain.chain[-1]
 
     @staticmethod
-    def add_block(new_block):
+    def add_block(new_block, new_root):
         Blockchain.load_blockchain()
         new_block.index = Blockchain.get_latest_block().index + 1
         new_block.previous_hash = Blockchain.get_latest_block().hash
+        new_block.merkle_root = new_root
         new_block.mine_block(Blockchain.difficulty)
         Blockchain.chain.append(new_block)
         Blockchain.save_blockchain(Blockchain.chain)
