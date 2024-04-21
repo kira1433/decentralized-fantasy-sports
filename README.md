@@ -7,7 +7,8 @@
 Run server.py, matcher.py, runner.py and miner.py in the respective order and follow the menu instructions.
 
 ### Team Members
-2021A7PS0467H: Aashish Chandra K
+2021A7PS0467H: Aashish Chandra K 
+
 2021A7PS0234H: Tarimala Vignesh Reddy
 
   
