@@ -25,13 +25,13 @@ if __name__ == "__main__":
 
     total_pool = 0
     winner_pool = 0
-
+    #calculate total pool and winner pool
     for transaction in Transactions.get_transactions():
         if transaction.match == match_id and transaction.successful:
             total_pool += int(transaction.amount)
             if transaction.team == winner:
                 winner_pool += int(transaction.amount)
-
+    #distribution of winning amount
     for transaction in Transactions.get_transactions():
         if transaction.match == match_id and transaction.successful and transaction.team == winner:
             secret_key=Users.fetch_secret_key(transaction.user)
